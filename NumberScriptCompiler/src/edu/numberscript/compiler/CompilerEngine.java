@@ -28,6 +28,8 @@ public class CompilerEngine {
 	 * @return C code equivalent to the line
 	 */
 	public String translate(String line) {
+		// remove all white space from the line
+		line.replaceAll("\\s", "");
 		if (valid(line)) {
 			return compile(line);
 		}
@@ -75,6 +77,7 @@ public class CompilerEngine {
 	}
 
 	private boolean validAssign(String line) {
+
 		return false;
 	}
 
