@@ -32,7 +32,7 @@ public class CompilerManager {
 		compiledFileName = compiledFileName.concat(".c");
 		compiledFile = new File(compiledFileName);
 		fWriter = new FileWriter(compiledFile);
-		pWriter = new PrintWriter(pWriter);
+		pWriter = new PrintWriter(fWriter);
 		myEngine = new CompilerEngine();
 	}
 

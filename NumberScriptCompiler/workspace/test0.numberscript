@@ -1,0 +1,8 @@
+# distance per day in miles
+distancePerDay = 20.0;
+distancePerMonth = distancePerDay * 30;
+milesPerGallon = 25.0;
+gallonsPerMonth = distancePerMonth / milesPerGallon;
+dollarsPerGallon = 2.50;
+dollarsPerMonth = dollarsPerGallon * gallonsPerMonth;
+print(dollarsPerMonth);

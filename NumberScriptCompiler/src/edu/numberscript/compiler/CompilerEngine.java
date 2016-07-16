@@ -195,8 +195,7 @@ public class CompilerEngine {
 			validLine = "//".concat(validLine);
 
 		} else if (isPrint(validLine)) {
-			validLine = "printf(%f,".concat(validLine.substring(validLine.indexOf('('), validLine.indexOf(')')))
-					.concat(";");
+			validLine = "printf(\"%f\\n\",".concat(validLine.substring(validLine.indexOf('(') + 1, validLine.length()));
 
 		} else {
 			validLine = "double ".concat(validLine);
