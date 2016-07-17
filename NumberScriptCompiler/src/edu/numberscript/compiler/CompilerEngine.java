@@ -16,6 +16,14 @@ import edu.numberscript.tokenizer.ArithmeticTokenizer;
 public class CompilerEngine {
 	/** sets whether or not to debug */
 	private static final boolean DEBUG = true;
+	/** assign line regex **/
+	private static final String ASSIGN_REGEX = "[a-zA-Z]*=.*;";
+	/** comment line regex **/
+	private static final String COMMENT_REGEX = "#.*";
+	/** print line regex **/
+	private static final String PRINT_REGEX = "print(.*);";
+	/** variable name regex **/
+	private static final String VARIABLE_REGEX = "[a-zA-Z]*";
 	/** set to hold variable names */
 	HashSet<String> variables;
 
@@ -69,7 +77,7 @@ public class CompilerEngine {
 	}
 
 	private boolean isPrint(String line) {
-		if (line.matches("print(.*);")) {
+		if (line.matches(PRINT_REGEX)) {
 			return true;
 		}
 		return false;
@@ -86,13 +94,21 @@ public class CompilerEngine {
 	}
 
 	private boolean isAssign(String line) {
-		if (line.matches("[a-zA-z]*=.*;")) {
+		if (line.matches(ASSIGN_REGEX)) {
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Checks whether an assignment line is valid
+	 * 
+	 * @param line
+	 *            an assignment statement
+	 * @return whether the assignment is valid
+	 */
 	private boolean validAssign(String line) {
+		// TODO Fix all of this!
 		List<String> expressionTokens = null;
 
 		try {
@@ -135,7 +151,7 @@ public class CompilerEngine {
 	 * @return if the variable is valid
 	 */
 	private boolean validVariableName(String variable) {
-		if (variable.matches("[a-zA-Z]*")) {
+		if (variable.matches(VARIABLE_REGEX)) {
 			return true;
 		}
 		return false;
@@ -164,7 +180,7 @@ public class CompilerEngine {
 	}
 
 	private boolean isComment(String line) {
-		if (line.matches("#.*")) {
+		if (line.matches(COMMENT_REGEX)) {
 			return true;
 		}
 		return false;
