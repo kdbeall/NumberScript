@@ -24,6 +24,8 @@ public class CompilerEngine {
 	private static final String PRINT_REGEX = "print(.*);";
 	/** variable name regex **/
 	private static final String VARIABLE_REGEX = "[a-zA-Z]*";
+	/** operator regex **/
+	private static final String OPERATOR_REGEX = "[+-*/]";
 	/** set to hold variable names */
 	HashSet<String> variables;
 
@@ -93,6 +95,13 @@ public class CompilerEngine {
 		return false;
 	}
 
+	/**
+	 * Checks if a line is an assign line
+	 * 
+	 * @param line
+	 *            a line of source code
+	 * @return if the line is an assign line
+	 */
 	private boolean isAssign(String line) {
 		if (line.matches(ASSIGN_REGEX)) {
 			return true;
@@ -112,32 +121,11 @@ public class CompilerEngine {
 		List<String> expressionTokens = null;
 
 		try {
-			expressionTokens = ArithmeticTokenizer.tokenize(line.substring(line.indexOf('=') + 1, line.length() - 1));
+			int start = line.indexOf('=') + 1;
+			int end = line.length() - 1;
+			expressionTokens = ArithmeticTokenizer.tokenize(line.substring(start, end));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-		Stack<String> tokens = new Stack<String>();
-		tokens.push(expressionTokens.get(0));
-		if (isOperator(tokens.peek()) || isRightBracket(tokens.peek()) || !validVariableName(tokens.peek())) {
-			return false;
-		}
-		for (int i = 1; i < expressionTokens.size(); i++) {
-			String token = expressionTokens.get(i);
-			// case if token is a variable name
-			if (validVariableName(token)) {
-				// is the variable name in the set?
-				if (!variables.contains(token)) {
-					// no?
-					return false;
-					// check if the variable before is a right bracket
-				} else if (isRightBracket(tokens.peek())) {
-					return false;
-				}
-				// looks good add to stack
-				tokens.push(expressionTokens.get(i));
-			}
-
 		}
 
 		return true;
@@ -173,7 +161,7 @@ public class CompilerEngine {
 	 * @return if valid or not
 	 */
 	private boolean isOperator(String operator) {
-		if (operator.matches("[+-*/]")) {
+		if (operator.matches(OPERATOR_REGEX)) {
 			return true;
 		}
 		return false;
@@ -208,13 +196,16 @@ public class CompilerEngine {
 	 */
 	public String compile(String validLine) {
 		if (isComment(validLine)) {
-			validLine = "//".concat(validLine);
+			String commentStart = "//";
+			validLine = commentStart.concat(validLine);
 
 		} else if (isPrint(validLine)) {
-			validLine = "printf(\"%f\\n\",".concat(validLine.substring(validLine.indexOf('(') + 1, validLine.length()));
+			String printStart = "printf(\"%f\\n\",";
+			validLine = printStart.concat(validLine.substring(validLine.indexOf('(') + 1, validLine.length()));
 
 		} else {
-			validLine = "double ".concat(validLine);
+			String doubleStart = "double ";
+			validLine = doubleStart.concat(validLine);
 		}
 
 		return validLine;

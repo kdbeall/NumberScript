@@ -14,10 +14,15 @@ import java.util.Scanner;
  *
  */
 public class CompilerManager {
+	/** source file **/
 	File sourceFile;
+	/** our output compiled file **/
 	File compiledFile;
+	/** helps write out **/
 	FileWriter fWriter;
+	/** writes text out **/
 	PrintWriter pWriter;
+	/** computes our compilation **/
 	CompilerEngine myEngine;
 
 	/**
@@ -36,6 +41,12 @@ public class CompilerManager {
 		myEngine = new CompilerEngine();
 	}
 
+	/**
+	 * Compiles our source file to C
+	 * 
+	 * @throws FileNotFoundException
+	 *             if we cannot find the input file
+	 */
 	public void compile() throws FileNotFoundException {
 		printHeader();
 		Scanner sc = new Scanner(sourceFile);
@@ -48,12 +59,18 @@ public class CompilerManager {
 		pWriter.close();
 	}
 
+	/**
+	 * Prints the header of our C source file
+	 */
 	private void printHeader() {
 		pWriter.println("#include<stdio.h>");
 		pWriter.println("");
 		pWriter.println("int main(){");
 	}
 
+	/**
+	 * Closes our C source file
+	 */
 	private void printClose() {
 		pWriter.println("}");
 	}
