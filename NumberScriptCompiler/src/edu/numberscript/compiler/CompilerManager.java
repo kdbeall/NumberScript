@@ -52,7 +52,11 @@ public class CompilerManager {
 		Scanner sc = new Scanner(sourceFile);
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
-			pWriter.println(myEngine.compile(line));
+			if (myEngine.valid(line)) {
+				pWriter.println(myEngine.compile(line));
+			} else {
+				throw new IllegalStateException("Invalid line\n");
+			}
 		}
 		sc.close();
 		printClose();

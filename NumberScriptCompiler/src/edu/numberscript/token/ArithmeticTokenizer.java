@@ -1,4 +1,4 @@
-package edu.numberscript.tokenizer;
+package edu.numberscript.token;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -39,6 +39,7 @@ public class ArithmeticTokenizer {
 				tokBuf.add(String.valueOf((char) tokenizer.ttype));
 			}
 		}
+		
 		return tokBuf;
 	}
 

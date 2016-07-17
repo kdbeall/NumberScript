@@ -2,10 +2,11 @@ package edu.numberscript.compiler;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Stack;
 
-import edu.numberscript.tokenizer.ArithmeticTokenizer;
+import edu.numberscript.token.ArithmeticTokenizer;
 
 /**
  * Translates statements from our NumberScript source to C
@@ -27,14 +28,14 @@ public class CompilerEngine {
 	/** operator regex **/
 	private static final String OPERATOR_REGEX = "[+-*/]";
 	/** set to hold variable names */
-	HashSet<String> variables;
+	private Hashtable<String, Double> variables;
 
 	/**
 	 * Constructs a new CompilerEngine
 	 */
 	public CompilerEngine() {
 		// initialze an empty set
-		variables = new HashSet<String>();
+		variables = new Hashtable<String, Double>();
 	}
 
 	/**
@@ -119,9 +120,10 @@ public class CompilerEngine {
 	private boolean validAssign(String line) {
 		// TODO Fix all of this!
 		List<String> expressionTokens = null;
-
 		try {
+			// start of arithmetic expression is after equals
 			int start = line.indexOf('=') + 1;
+			// end is before the semicolon
 			int end = line.length() - 1;
 			expressionTokens = ArithmeticTokenizer.tokenize(line.substring(start, end));
 		} catch (IOException e) {
@@ -129,6 +131,19 @@ public class CompilerEngine {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Converts our arithmetic expression to reverse polish notation
+	 * 
+	 * @param tokens
+	 *            an array of tokens of arithmetic operators, operands and
+	 *            parenthesis
+	 * @return Array of tokens in reverse polish notation
+	 */
+	private String[] reversePolishNotation(String[] tokens) {
+
+		return null;
 	}
 
 	/**
@@ -140,28 +155,6 @@ public class CompilerEngine {
 	 */
 	private boolean validVariableName(String variable) {
 		if (variable.matches(VARIABLE_REGEX)) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isRightBracket(String operator) {
-		if (operator.matches(")")) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if a valid operator
-	 * 
-	 * @param operator
-	 *            a possible operator
-	 * 
-	 * @return if valid or not
-	 */
-	private boolean isOperator(String operator) {
-		if (operator.matches(OPERATOR_REGEX)) {
 			return true;
 		}
 		return false;
@@ -201,7 +194,9 @@ public class CompilerEngine {
 
 		} else if (isPrint(validLine)) {
 			String printStart = "printf(\"%f\\n\",";
-			validLine = printStart.concat(validLine.substring(validLine.indexOf('(') + 1, validLine.length()));
+			int start = validLine.indexOf('(') + 1;
+			int end = validLine.length();
+			validLine = printStart.concat(validLine.substring(start, end));
 
 		} else {
 			String doubleStart = "double ";
