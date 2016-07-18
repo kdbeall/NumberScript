@@ -10,6 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import edu.numberscript.token.ArithmeticTokenizer;
 import edu.numberscript.token.ReversePolishConverter;
 import edu.numberscript.token.Token;
+import edu.numberscript.token.TokenType;
 
 /**
  * Translates statements from our NumberScript source to C
@@ -19,7 +20,7 @@ import edu.numberscript.token.Token;
  */
 public class CompilerEngine {
 	/** sets whether or not to debug */
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG_COMPILE = true;
 	/** assign line regex **/
 	private static final String ASSIGN_REGEX = "[a-zA-Z]*=.*;";
 	/** comment line regex **/
@@ -47,14 +48,15 @@ public class CompilerEngine {
 	 * @param line
 	 *            a line of NumberScript source code
 	 * @return C code equivalent to the line
+	 * @throws Exception
 	 */
-	public String translate(String line) {
+	public String translate(String line) throws Exception {
 		// remove all white space from the line
 		line = line.replaceAll("\\s", "");
 		if (valid(line)) {
 			return compile(line);
 		}
-		return null;
+		throw new Exception("Invalid line");
 	}
 
 	/**
@@ -63,9 +65,10 @@ public class CompilerEngine {
 	 * @param line
 	 *            a line of NumberScript source code
 	 * @return if the line is valid NumberScript
+	 * @throws InterruptedException
 	 */
-	public boolean valid(String line) {
-		if (DEBUG) {
+	public boolean valid(String line) throws InterruptedException {
+		if (DEBUG_COMPILE) {
 			return true;
 		}
 		// check if a valid print statement
@@ -119,28 +122,45 @@ public class CompilerEngine {
 	 * @param line
 	 *            an assignment statement
 	 * @return whether the assignment is valid
+	 * @throws InterruptedException
 	 */
-	private boolean validAssign(String line) {
+	private boolean validAssign(String line) throws InterruptedException {
 		// TODO Fix all of this!
-
-		// get the arithmetic expression and tokenize it
-		List<Token> expressionTokens = null;
-		try {
-			// start of arithmetic expression is after equals
-			int start = line.indexOf('=') + 1;
-			// end is before the semicolon
-			int end = line.length() - 1;
-			expressionTokens = ArithmeticTokenizer.tokenize(line.substring(start, end));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// convert it to reverse polish notation
-		LinkedBlockingQueue<Token> rpnTokens = ReversePolishConverter.convert(expressionTokens);
-
-		// let's attempt to evaluate expression
-		Stack<Token> evaluate = new Stack<Token>();
-
 		return true;
+
+		/**
+		 * 
+		 * // get the arithmetic expression and tokenize it List<Token>
+		 * expressionTokens = null; try { // start of arithmetic expression is
+		 * after equals int start = line.indexOf('=') + 1; // end is before the
+		 * semicolon int end = line.length() - 1; expressionTokens =
+		 * ArithmeticTokenizer.tokenize(line.substring(start, end)); } catch
+		 * (IOException e) { e.printStackTrace(); } // check that all variables
+		 * are in the hash table for (int i = 0; i < expressionTokens.size();
+		 * i++) { if (expressionTokens.get(i).getType() == TokenType.VARIABLE) {
+		 * if (!variables.contains(expressionTokens.get(i).getValue())) { throw
+		 * new IllegalArgumentException(); } expressionTokens.add(i, new
+		 * Token(TokenType.NUMBER, ); } } // convert it to reverse polish
+		 * notation LinkedBlockingQueue<Token> rpnTokens =
+		 * ReversePolishConverter.convert(expressionTokens);
+		 * 
+		 * // let's attempt to evaluate expression Stack<Double> evaluate = new
+		 * Stack<Double>(); while (!rpnTokens.isEmpty()) { Token current =
+		 * rpnTokens.take(); if (current.getType() == TokenType.VARIABLE ||
+		 * current.getType() == TokenType.NUMBER) { evaluate.push(current); }
+		 * else if (evaluate.size() < 2) { if (current.getType() ==
+		 * TokenType.MINUS && evaluate.size() == 1) { evaluate.push(new
+		 * Token(evaluate.pop().getType(),
+		 * "-".concat(evaluate.pop().getValue()))); } else { throw new
+		 * IllegalArgumentException(); } } else { Token first = evaluate.pop();
+		 * Token second = evaluate.pop(); double value1 =
+		 * Double.parseDouble(first.getValue()); double value2 =
+		 * Double.parseDouble(first.getValue()); if(current.getType() ==
+		 * TokenType.PLUS){ evaluate.push() } } }
+		 * 
+		 * 
+		 * return true;
+		 */
 	}
 
 	/**

@@ -10,6 +10,7 @@ public class Token {
 	/** is the token a variable, parenthesis, or operation **/
 	private TokenType type;
 	private String value;
+	private double numericValue;
 	private int precedence;
 
 	/**
@@ -85,6 +86,14 @@ public class Token {
 		case NUMBER:
 			break;
 		}
+	}
+
+	public void setNumericValue(double value) {
+		this.numericValue = value;
+	}
+
+	public double getNumericValue() {
+		return numericValue;
 	}
 
 }

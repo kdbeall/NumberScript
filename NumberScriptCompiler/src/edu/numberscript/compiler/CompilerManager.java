@@ -46,8 +46,9 @@ public class CompilerManager {
 	 * 
 	 * @throws FileNotFoundException
 	 *             if we cannot find the input file
+	 * @throws InterruptedException
 	 */
-	public void compile() throws FileNotFoundException {
+	public void compile() throws FileNotFoundException, InterruptedException {
 		printHeader();
 		Scanner sc = new Scanner(sourceFile);
 		while (sc.hasNextLine()) {

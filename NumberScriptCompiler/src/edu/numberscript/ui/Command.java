@@ -18,8 +18,9 @@ public class Command {
 	 * 
 	 * @param args
 	 *            our command line arguments
+	 * @throws InterruptedException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 		if (args.length != 1) {
 			throw new IllegalArgumentException();
