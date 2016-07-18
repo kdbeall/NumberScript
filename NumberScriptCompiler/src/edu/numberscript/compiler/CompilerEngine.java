@@ -5,8 +5,11 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import edu.numberscript.token.ArithmeticTokenizer;
+import edu.numberscript.token.ReversePolishConverter;
+import edu.numberscript.token.Token;
 
 /**
  * Translates statements from our NumberScript source to C
@@ -119,7 +122,9 @@ public class CompilerEngine {
 	 */
 	private boolean validAssign(String line) {
 		// TODO Fix all of this!
-		List<String> expressionTokens = null;
+
+		// get the arithmetic expression and tokenize it
+		List<Token> expressionTokens = null;
 		try {
 			// start of arithmetic expression is after equals
 			int start = line.indexOf('=') + 1;
@@ -129,21 +134,13 @@ public class CompilerEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// convert it to reverse polish notation
+		LinkedBlockingQueue<Token> rpnTokens = ReversePolishConverter.convert(expressionTokens);
+
+		// let's attempt to evaluate expression
+		Stack<Token> evaluate = new Stack<Token>();
 
 		return true;
-	}
-
-	/**
-	 * Converts our arithmetic expression to reverse polish notation
-	 * 
-	 * @param tokens
-	 *            an array of tokens of arithmetic operators, operands and
-	 *            parenthesis
-	 * @return Array of tokens in reverse polish notation
-	 */
-	private String[] reversePolishNotation(String[] tokens) {
-
-		return null;
 	}
 
 	/**
