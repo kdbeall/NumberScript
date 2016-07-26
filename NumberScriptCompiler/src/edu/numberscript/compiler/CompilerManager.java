@@ -55,6 +55,7 @@ public class CompilerManager {
 			String line = sc.nextLine();
 			if (myEngine.valid(line)) {
 				pWriter.println(myEngine.compile(line));
+				System.out.println(line);
 			} else {
 				throw new IllegalStateException("Invalid line\n");
 			}

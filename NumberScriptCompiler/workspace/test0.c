@@ -8,5 +8,7 @@ double milesPerGallon = 25.0;
 double gallonsPerMonth = distancePerMonth / milesPerGallon;
 double dollarsPerGallon = 2.50;
 double dollarsPerMonth = dollarsPerGallon * gallonsPerMonth;
+
+
 printf("%f\n",dollarsPerMonth);
 }

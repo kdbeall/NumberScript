@@ -11,7 +11,7 @@ public class CompilerEngine {
 	/** sets whether or not to debug */
 	private static final boolean DEBUG_COMPILE = true;
 	/** assign line regex **/
-	private static final String ASSIGN_REGEX = "[a-zA-Z]+=.+;";
+	private static final String ASSIGN_REGEX = "[a-z A-Z]*=.*;";
 	/** comment line regex **/
 	private static final String COMMENT_REGEX = "#.*";
 	/** print line regex **/
